@@ -82,3 +82,150 @@ var isPalindrome = function(x) {
     return recCall(x, digitsNumber);
 
 };
+
+/**
+ * 13. Roman to Integer
+ * @param {string} s
+ * @return {number}
+ */
+ var romanToInt = function(s) {
+    switch (s[0]) {
+        case 'I':
+            switch (s.slice(0, 2)) {
+                case 'IV':
+                    return 4 + romanToInt(s.slice(2));
+                    break;
+                case 'IX':
+                    return 9 + romanToInt(s.slice(2));
+                    break;
+                case 'I':
+                    return 1;
+                    break
+                default:
+                    return 1 + romanToInt(s.slice(1));
+                    break;
+            }
+            break;
+        case 'V':
+            return 5 + romanToInt(s.slice(1));
+            break;
+        case 'X':
+            switch (s.slice(0, 2)) {
+                case 'XL':
+                    return 40 + romanToInt(s.slice(2));
+                    break;
+                case 'XC':
+                    return 90 + romanToInt(s.slice(2));
+                    break;
+                case 'X':
+                    return 10;
+                    break
+                default:
+                    return 10 + romanToInt(s.slice(1));
+                    break;
+            }
+            break;
+        case 'L':
+            return 50 + romanToInt(s.slice(1));
+            break;
+        case 'C':
+            switch (s.slice(0, 2)) {
+                case 'CD':
+                    return 400 + romanToInt(s.slice(2));
+                    break;
+                case 'CM':
+                    return 900 + romanToInt(s.slice(2));
+                    break;
+                case 'C':
+                    return 100;
+                    break
+                default:
+                    return 100 + romanToInt(s.slice(1));
+                    break;
+            }
+            break;
+        case 'D':
+            return 500 + romanToInt(s.slice(1));
+            break;
+        case 'M':
+            return 1000 + romanToInt(s.slice(1));
+            break;
+        default:
+            return 0;
+            break;
+    }
+};
+
+/**
+ * 14. Longest Common Prefix
+ * @param {string[]} strs
+ * @return {string}
+ */
+ var longestCommonPrefix1 = function(strs) {
+    let chars = [];
+    let strings = [];
+    for (const elem of strs) {
+        chars.push(elem.slice(0, 1));
+        strings.push(elem.slice(1));
+    }
+    if (chars.every(item => item === chars[0])) {
+        if (chars[0] === '') {
+            return '';
+        } else {
+            return chars[0] + longestCommonPrefix(strings);
+        }
+    } else {
+        return '';
+    }
+};
+// Varian with one cycle
+var longestCommonPrefix2 = function(strs) {
+    let recCall = function(pos) {
+        let char = strs[0][pos];
+        if (!char) {
+            return '';
+        }
+        for (const elem of strs) {
+            if (char === elem[pos]) {
+                continue;
+            } else {
+                return '';
+            }
+        }
+        return char + recCall(pos + 1);
+    };
+    return recCall(0);
+};
+// Devide and conquer approach
+var longestCommonPrefix = function(strs) {
+    let lcr2 = function(strings) {
+        let min, max;
+        if (strings[0].length >= strings[1].length) {
+            min = strings[0];
+            max = strings[1];
+        } else {
+            min = strings[1];
+            max = strings[0];
+        }
+        while(!max.startsWith(min) && min.length > 0) {
+            min = min.slice(0, -1)
+        };
+        return min;
+    };
+    let recCall = function(strings) {
+        if (strings.length === 0) {
+            return '';
+        }
+        if (strings.length === 1) {
+            return strings[0];
+        }
+        if (strings.length === 2) {
+            return lcr2(strings);
+        }
+        let mid = Math.round(strings.length / 2);
+        let leftLCR = recCall(strings.slice(0, mid));
+        let rightLCR = recCall(strings.slice(mid));
+        return lcr2([leftLCR, rightLCR]);
+    };
+    return recCall(strs);
+}
