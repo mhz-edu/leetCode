@@ -98,3 +98,27 @@ describe("14. Longest Common Prefix", function () {
         assert.equal(longestCommonPrefix(['']), '');
     });
 });
+
+describe("20. Valid Parentheses", function() {
+    it("valid string ()", function() {
+        assert.isTrue(isValid('()'));
+    });
+    it("valid string, three groups ()[]{}", function() {
+        assert.isTrue(isValid('()[]{}'));
+    });
+    it("valid string, inner groups ([()[]])", function() {
+        assert.isTrue(isValid('([()[]])'));
+    });
+    it("invalid string, inner groups (]", function() {
+        assert.isFalse(isValid('(]'));
+    });
+    it("invalid string, inner groups ([{})[]])", function() {
+        assert.isFalse(isValid('([{})[]])'));
+    });
+    it("invalid string one char (", function() {
+        assert.isFalse(isValid('('));
+    });
+    it("invalid string start from closing bracket )(", function() {
+        assert.isFalse(isValid(')('));
+    });
+});

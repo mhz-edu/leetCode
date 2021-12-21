@@ -229,3 +229,41 @@ var longestCommonPrefix = function(strs) {
     };
     return recCall(strs);
 }
+
+/**
+ * 20. Valid Parentheses
+ * @param {string} s
+ * @return {boolean}
+ */
+ var isValid = function(s) {
+    if (s.length === 1) {
+        return false;
+    }
+    let stack = [];
+    for (let i = 0; i < s.length; i++) {
+        switch (s[i]) {
+            case '(':
+            case '[':
+            case '{':
+                stack.push(s[i]);
+                break;
+            case ')':
+            case ']':
+            case '}':
+                if (stack.length === 0) {
+                    return false;
+                }
+                let stackTop = stack.pop();
+                if (s[i].charCodeAt(0) === stackTop.charCodeAt(0) + 1 || s[i].charCodeAt(0) === stackTop.charCodeAt(0) + 2) {
+                    continue;
+                } else {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+    return (stack.length === 0);
+};
